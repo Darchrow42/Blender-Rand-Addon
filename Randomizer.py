@@ -37,12 +37,18 @@ bpy.types.WindowManager.randomize_scale= bpy.props.BoolProperty(name="Randomize 
                                     get= None,
                                     subtype="NONE")
                                     
+bpy.types.WindowManager.randomize_rotation= bpy.props.BoolProperty(name="Randomize Rotation",
+                                    description="Whether scale is randomized or not",
+                                    default=True,
+                                    get= None,
+                                    subtype="NONE")                                    
+                                    
                                     
                                     
 
 class RandomizeScale(bpy.types.Operator):
     bl_idname = "object.rndscale"
-    bl_label = "Randomize Scale In Range"
+    bl_label = "Randomize"
     bl_description = "Randomly scale all selected objects within the range"
 
 
@@ -56,8 +62,10 @@ class RandomizeScale(bpy.types.Operator):
                 obj.scale.x*=GlobalRandom
                 obj.scale.y*=GlobalRandom
                 obj.scale.z*=GlobalRandom
-            
-            obj.rotation_euler[2]+= 3.1415*RotationRandom
+            if bpy.context.window_manager.randomize_rotation == 1:            
+                obj.rotation_euler[0]+= 3.1415*RotationRandom
+                obj.rotation_euler[1]+= 3.1415*RotationRandom
+                obj.rotation_euler[2]+= 3.1415*RotationRandom
             
         return {'FINISHED'}
 
@@ -96,7 +104,10 @@ class RAND_Panel(bpy.types.Panel):
         row.scale_y = 3.0
         row.operator("object.rndscale")
         
+        layout.label(text="parameters:")
+        layout = self.layout
         layout.prop(bpy.context.window_manager, "randomize_scale")
+        layout.prop(bpy.context.window_manager, "randomize_rotation")
 
 
 classes = (RAND_Panel,
