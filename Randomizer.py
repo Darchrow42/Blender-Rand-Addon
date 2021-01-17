@@ -20,7 +20,8 @@ class RandomizeScale(bpy.types.Operator):
         for obj in bpy.context.selected_objects:
             GlobalRandom = random.uniform(bpy.context.window_manager.min,bpy.context.window_manager.max)
             obj.scale.x*=GlobalRandom
-        
+            obj.scale.y*=GlobalRandom
+            obj.scale.z*=GlobalRandom
         return {'FINISHED'}
 
 
