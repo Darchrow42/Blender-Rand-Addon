@@ -4,12 +4,16 @@ import random
 
 bpy.types.WindowManager.scale_min= bpy.props.FloatProperty(name="min",
                                     description="Minimum scaling applied",
-                                    default=1.0,
+                                    min=0,
+                                    soft_min=0,
+                                    default=0.5,
                                     subtype="NONE")
                                     
                                     
 bpy.types.WindowManager.scale_max= bpy.props.FloatProperty(name="max",
                                     description="Maximum scaling applied",
+                                    min=0,
+                                    soft_min=0,
                                     default=1.0,
                                     subtype="NONE")
                                     
@@ -105,12 +109,11 @@ class RandomizeScale(bpy.types.Operator):
                     obj.scale.z*=GlobalRandom
             if bpy.context.window_manager.randomize_rotation == 1: 
                 if bpy.context.window_manager.x_rotation == 1:           
-                    obj.rotation_euler[0]+= 3.1415*RotationRandom
+                    obj.rotation_euler[0]+= 3.1415*2*RotationRandom
                 if bpy.context.window_manager.y_rotation == 1:
-                    obj.rotation_euler[1]+= 3.1415*RotationRandom
+                    obj.rotation_euler[1]+= 3.1415*2*RotationRandom
                 if bpy.context.window_manager.z_rotation == 1:
-        #            obj.rotation_euler[2]+= 3.1415*RotationRandom
-        #    bpy.ops.object.transform_apply(location = True, rotation = True, scale = True)
+                    obj.rotation_euler[2]+= 3.1415*2*RotationRandom
             
         return {'FINISHED'}
 
