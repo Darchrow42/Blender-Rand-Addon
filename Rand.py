@@ -32,7 +32,7 @@ bpy.types.WindowManager.scale_max= bpy.props.FloatProperty(name="max",
                                     subtype="NONE")
                                     
 bpy.types.WindowManager.rotation_min= bpy.props.FloatProperty(name="min",
-                                    description="Minimum rotation applied",
+                                    description="Minimum possible rotation (On a scale of 0 to 360 degrees. 0 being no rotation, 1 being 360 degree rotation",
                                     min=0,
                                     soft_min=0,
                                     max=1,
@@ -41,7 +41,7 @@ bpy.types.WindowManager.rotation_min= bpy.props.FloatProperty(name="min",
                                     subtype="NONE")
                                     
 bpy.types.WindowManager.rotation_max= bpy.props.FloatProperty(name="max",
-                                    description="Minimum rotation applied",
+                                    description="Maximum possible rotation (On a scale of 0 to 360 degrees. 0 being no rotation, 1 being 360 degree rotation",
                                     min=0,
                                     soft_min=0,
                                     max=1,
@@ -49,26 +49,26 @@ bpy.types.WindowManager.rotation_max= bpy.props.FloatProperty(name="max",
                                     default=0.0,
                                     subtype="NONE")
                                     
-bpy.types.WindowManager.randomize_scale= bpy.props.BoolProperty(name="Randomize Scale",
+bpy.types.WindowManager.randomize_scale= bpy.props.BoolProperty(name="Scale",
                                     description="Whether scale is randomized or not",
                                     default=True,
                                     get= None,
                                     subtype="NONE")
                                     
-bpy.types.WindowManager.randomize_rotation= bpy.props.BoolProperty(name="Randomize Rotation",
+bpy.types.WindowManager.randomize_rotation= bpy.props.BoolProperty(name="Rotate",
                                     description="Whether rotation is randomized or not",
                                     default=True,
                                     get= None,
                                     subtype="NONE")     
                                     
 bpy.types.WindowManager.x_rotation= bpy.props.BoolProperty(name="X",
-                                    description="rotation around x",
+                                    description="rotation around X",
                                     default=True,
                                     get= None,
                                     subtype="NONE")        
                                     
 bpy.types.WindowManager.y_rotation= bpy.props.BoolProperty(name="Y",
-                                    description="rotation around y",
+                                    description="rotation around Y",
                                     default=True,
                                     get= None,
                                     subtype="NONE")
@@ -80,13 +80,13 @@ bpy.types.WindowManager.z_rotation= bpy.props.BoolProperty(name="Z",
                                     subtype="NONE")
                                     
 bpy.types.WindowManager.x_scale= bpy.props.BoolProperty(name="X",
-                                    description="scaling on x",
+                                    description="scaling on X",
                                     default=True,
                                     get= None,
                                     subtype="NONE")        
                                     
 bpy.types.WindowManager.y_scale= bpy.props.BoolProperty(name="Y",
-                                    description="scaling on y",
+                                    description="scaling on Y",
                                     default=True,
                                     get= None,
                                     subtype="NONE")
@@ -105,7 +105,7 @@ bpy.types.WindowManager.z_scale= bpy.props.BoolProperty(name="Z",
 class RandomizeScale(bpy.types.Operator):
     bl_idname = "object.rndscale"
     bl_label = "Randomize"
-    bl_description = "Randomly scale all selected objects within the range"
+    bl_description = "Randomly scale and/or rotate all selected objects within the ranges"
 
 
     def execute(self, context):
@@ -149,14 +149,14 @@ class RAND_Panel(bpy.types.Panel):
         layout = self.layout
         split = layout.split()
         col = split.column(align=True)
-        col.label(text="Scale Multiplier Range:")
+        col.label(text="Scale Range:")
         col.prop(bpy.context.window_manager, "scale_min")
         col.prop(bpy.context.window_manager, "scale_max")
         
 
 
         col = split.column(align=True)
-        col.label(text="Rotation Random Range:")
+        col.label(text="Rotation Range:")
         col.prop(bpy.context.window_manager, "rotation_min")
         col.prop(bpy.context.window_manager, "rotation_max")
         
@@ -171,17 +171,19 @@ class RAND_Panel(bpy.types.Panel):
         layout.prop(bpy.context.window_manager, "randomize_scale")
         layout.prop(bpy.context.window_manager, "randomize_rotation")
         
-        layout.label(text="Rotation axis settings")
+        layout.label(text="Scale axis:")
+        row=layout.row()
+        row.prop(bpy.context.window_manager, "x_scale")
+        row.prop(bpy.context.window_manager, "y_scale")
+        row.prop(bpy.context.window_manager, "z_scale")
+        
+        layout.label(text="Rotation axis:")
         row=layout.row()
         row.prop(bpy.context.window_manager, "x_rotation")
         row.prop(bpy.context.window_manager, "y_rotation")
         row.prop(bpy.context.window_manager, "z_rotation")
         
-        layout.label(text="Scale axis settings")
-        row=layout.row()
-        row.prop(bpy.context.window_manager, "x_scale")
-        row.prop(bpy.context.window_manager, "y_scale")
-        row.prop(bpy.context.window_manager, "z_scale")
+
 
 
 classes = (RAND_Panel,
