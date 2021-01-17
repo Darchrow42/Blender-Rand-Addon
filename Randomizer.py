@@ -3,16 +3,17 @@ import random
 
 
 bpy.types.WindowManager.min= bpy.props.FloatProperty(name="min",
-                                    description="Some elaborate description",
+                                    description="Minimum scaling applied",
                                     subtype="NONE")
 bpy.types.WindowManager.max= bpy.props.FloatProperty(name="max",
-                                    description="Some elaborate description",
+                                    description="Maximum scaling applied",
                                     subtype="NONE")
 
 
 class RandomizeScale(bpy.types.Operator):
     bl_idname = "object.rndscale"
     bl_label = "Randomize Scale In Range"
+    bl_description = "Randomly scale all selected objects within the range"
 
 
     def execute(self, context):
@@ -33,8 +34,8 @@ class RandomizeScale(bpy.types.Operator):
 
 
 class RAND_Panel(bpy.types.Panel):
-    bl_label = "WorthGroup Tools Panel"
-    bl_category = "WorthGroup Tools Addon"
+    bl_label = "Rand"
+    bl_category = "Rand"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
 
@@ -42,7 +43,7 @@ class RAND_Panel(bpy.types.Panel):
         layout = self.layout
         split = layout.split()
         col = split.column(align=True)
-        col.label(text="Scale Range:")
+        col.label(text="Scale Multiplier Range:")
         col.prop(bpy.context.window_manager, "min")
         col.prop(bpy.context.window_manager, "max")
         
