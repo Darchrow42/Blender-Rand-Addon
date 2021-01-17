@@ -1,3 +1,13 @@
+bl_info = {
+    "name": "Rand",
+    "blender": (2, 91, 0),
+    "category": "Object",
+}
+
+
+
+
+
 import bpy
 import random
 
