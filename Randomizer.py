@@ -2,10 +2,10 @@ import bpy
 import random
 
 
-bpy.types.WindowManager.min= bpy.props.FloatProperty(name="min",
+bpy.types.WindowManager.scale_min= bpy.props.FloatProperty(name="min",
                                     description="Minimum scaling applied",
                                     subtype="NONE")
-bpy.types.WindowManager.max= bpy.props.FloatProperty(name="max",
+bpy.types.WindowManager.scale_max= bpy.props.FloatProperty(name="max",
                                     description="Maximum scaling applied",
                                     subtype="NONE")
 
@@ -19,7 +19,7 @@ class RandomizeScale(bpy.types.Operator):
     def execute(self, context):
         GlobalRandom = 1.0
         for obj in bpy.context.selected_objects:
-            GlobalRandom = random.uniform(bpy.context.window_manager.min,bpy.context.window_manager.max)
+            GlobalRandom = random.uniform(bpy.context.window_manager.scale_min,bpy.context.window_manager.scale_max)
             obj.scale.x*=GlobalRandom
             obj.scale.y*=GlobalRandom
             obj.scale.z*=GlobalRandom
@@ -44,8 +44,16 @@ class RAND_Panel(bpy.types.Panel):
         split = layout.split()
         col = split.column(align=True)
         col.label(text="Scale Multiplier Range:")
-        col.prop(bpy.context.window_manager, "min")
-        col.prop(bpy.context.window_manager, "max")
+        col.prop(bpy.context.window_manager, "scale_min")
+        col.prop(bpy.context.window_manager, "scale_max")
+        
+
+
+        col = split.column(align=True)
+        col.label(text="Rotation Random Range:")
+        col.prop(bpy.context.window_manager, "scale_min")
+        col.prop(bpy.context.window_manager, "scale_max")
+        
         
         layout.label(text="Randomize:")
         row = layout.row()
