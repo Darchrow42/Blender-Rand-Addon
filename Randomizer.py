@@ -1,5 +1,9 @@
 bl_info = {
     "name": "Rand",
+    "descreption": "An add-on that allows you to randomize the transforms of multiple objects at once. You can chose which axis is affected, and which operations are performed",
+    "author": "Hosein Sabzpoosh",
+    "version": (1.0),
+    "location": "3D View-> Properties",   
     "blender": (2, 91, 0),
     "category": "Object",
 }
