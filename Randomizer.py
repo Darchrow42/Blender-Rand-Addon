@@ -2,13 +2,12 @@ import bpy
 import random
 
 
-class Randomizer(bpy.types.PropertyGroup):
-    min: bpy.props.FloatProperty(name="min",
-                                        description="Some elaborate description",
-                                        subtype="NONE")
-    max: bpy.props.FloatProperty(name="max",
-                                        description="Some elaborate description",
-                                        subtype="NONE")
+bpy.types.WindowManager.min= bpy.props.FloatProperty(name="min",
+                                    description="Some elaborate description",
+                                    subtype="NONE")
+bpy.types.WindowManager.max= bpy.props.FloatProperty(name="max",
+                                    description="Some elaborate description",
+                                    subtype="NONE")
 
 
 class RandomizeScale(bpy.types.Operator):
@@ -17,10 +16,10 @@ class RandomizeScale(bpy.types.Operator):
 
 
     def execute(self, context):
-        SRandom = random.uniform(0.8,1.2)
+        GlobalRandom = 1.0
         for obj in bpy.context.selected_objects:
-            obj.scale.x*=SRandom
-            SRandom = random.uniform(0.8,1.2)
+            GlobalRandom = random.uniform(bpy.context.window_manager.min,bpy.context.window_manager.max)
+            obj.scale.x*=GlobalRandom
         
         return {'FINISHED'}
 
@@ -40,21 +39,19 @@ class RAND_Panel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        worth_group_tools = context.scene.worth_group_tools
         split = layout.split()
         col = split.column(align=True)
-        col.label(text="Column Two:")
-        col.prop(worth_group_tools, "min")
-        col.prop(worth_group_tools, "max")
+        col.label(text="Scale Range:")
+        col.prop(bpy.context.window_manager, "min")
+        col.prop(bpy.context.window_manager, "max")
         
-        layout.label(text="Big Button:")
+        layout.label(text="Randomize:")
         row = layout.row()
         row.scale_y = 3.0
         row.operator("object.rndscale")
 
 
-classes = (Randomizer,
-           RAND_Panel,
+classes = (RAND_Panel,
            RandomizeScale)
 
 
@@ -62,7 +59,7 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
         
-    bpy.types.Scene.worth_group_tools = bpy.props.PointerProperty(type=Randomizer)
+
 
 
 
